@@ -2,6 +2,8 @@
 /idea
 .idea
 
+/src/config.ts
+
 /.env.local
 /env.local
 
