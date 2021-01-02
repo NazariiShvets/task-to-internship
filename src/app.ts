@@ -1,6 +1,4 @@
-import express, {
-  Application, Request, Response, Router,
-} from 'express';
+import express, { Application, Router } from 'express';
 import bodyParser from 'body-parser';
 import { PORT } from './config';
 import { db } from './db';
