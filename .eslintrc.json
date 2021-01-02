@@ -26,6 +26,6 @@
         "tsx": "never"
       }
     ],
-    "import/no-unresolved": "error"
+    "import/no-unresolved": 2
   }
 }

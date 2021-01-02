@@ -1,7 +1,7 @@
 import { Sequelize } from 'sequelize';
-import { password } from './config';
+import { password, dbName, dbUser } from './config';
 
-export const db = new Sequelize('task-to-intership', 'postgres', password, {
+export const db = new Sequelize(dbName, dbUser, password, {
   host: 'localhost',
   dialect: 'postgres',
   // models: [__dirname + '/models'],
