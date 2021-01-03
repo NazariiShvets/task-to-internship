@@ -7,7 +7,7 @@ import Teacher from './Teacher';
 const app: Application = express();
 const teachersRouter: Router = express.Router();
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.json());
 app.use('/teachers', teachersRouter);
@@ -20,9 +20,9 @@ teachersRouter.delete('/:id', Teacher.deleteTeacher);
 
 app.get('/', Teacher.getTargetMathTeachers);
 
-db.authenticate().then(() => {
-  console.log('Database connect');
-  app.listen(PORT, () => {
-    console.log(`Server started at port ${PORT}`);
-  });
+// db.authenticate().then(() => {
+//   console.log('Database connect');
+app.listen(PORT, () => {
+  console.log(`Server started at port ${PORT}`);
 });
+// });
