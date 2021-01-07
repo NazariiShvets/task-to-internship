@@ -1,25 +1,47 @@
-import { dbPassword, dbName, dbUser } from './config';
-// import { Sequelize } from 'sequelize';
-//
-// export const db = new Sequelize(dbName, dbUser, password, {
-//   host: 'localhost',
-//   dialect: 'postgres',
-//   // models: [__dirname + '/models'],
-//   pool: {
-//     max: 5,
-//     min: 0,
-//     acquire: 30000,
-//     idle: 10000,
-//   },
-// });
+import { DataTypes, Model, Sequelize } from 'sequelize';
+import {
+  dbPassword, dbName, dbUser, dbTeachersTableName,
+} from './config';
+import { enumToArray } from './utils';
+import { ESex, EUniversities, ITeacher } from './model';
 
-const { Pool } = require('pg');
-
-export const db = new Pool({
-  user: dbUser,
+export const db: Sequelize = new Sequelize(dbName, dbUser, dbPassword, {
   host: 'localhost',
-  database: dbName,
-  password: dbPassword,
-  port: 5432,
+  dialect: 'postgres',
 });
-console.log('PostgreSQL connected...');
+
+export class Teacher extends Model<ITeacher> {
+}
+
+Teacher.init({
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  age: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  subject: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  sex: {
+    type: DataTypes.ENUM,
+    values: enumToArray(ESex),
+    allowNull: false,
+  },
+  yearsOfExperience: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0,
+  },
+  workedInUniversities: {
+    type: DataTypes.ENUM,
+    values: enumToArray(EUniversities),
+    defaultValue: EUniversities[EUniversities.OurTestSchool],
+  },
+}, {
+  sequelize: db,
+  modelName: 'Teacher',
+  tableName: dbTeachersTableName,
+});

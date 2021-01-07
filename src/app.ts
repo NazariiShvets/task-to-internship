@@ -2,7 +2,10 @@ import express, { Application, Router } from 'express';
 import bodyParser from 'body-parser';
 import { PORT } from './config';
 import { db } from './db';
-import Teacher from './Teacher';
+import {
+  createTeacher, deleteTeacher, getAllTeachers, getTargetMathTeachers, getTeacherById,
+  updateTeacher,
+} from './router';
 
 const app: Application = express();
 const teachersRouter: Router = express.Router();
@@ -10,19 +13,25 @@ const teachersRouter: Router = express.Router();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.json());
+
 app.use('/teachers', teachersRouter);
 
-teachersRouter.get('/', Teacher.getAllTeachers);
-teachersRouter.get('/:id', Teacher.getTeacherById);
-teachersRouter.post('/create', Teacher.createTeacher);
-teachersRouter.put('/:id', Teacher.updateTeacher);
-teachersRouter.delete('/:id', Teacher.deleteTeacher);
+teachersRouter.get('/', getAllTeachers);
+teachersRouter.get('/:id', getTeacherById);
+teachersRouter.post('/create', createTeacher);
+teachersRouter.put('/:id', updateTeacher);
+teachersRouter.delete('/:id', deleteTeacher);
 
-app.get('/', Teacher.getTargetMathTeachers);
+app.get('/', getTargetMathTeachers);
 
-// db.authenticate().then(() => {
-//   console.log('Database connect');
-app.listen(PORT, () => {
-  console.log(`Server started at port ${PORT}`);
+db.authenticate().then(async () => {
+  try {
+    await db.sync({ force: true });
+    console.log('Database connect');
+    app.listen(PORT, () => {
+      console.log(`Server started at port ${PORT}`);
+    });
+  } catch (e) {
+    console.error(e);
+  }
 });
-// });
