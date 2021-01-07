@@ -3,7 +3,9 @@ import {
   dbPassword, dbName, dbUser, dbTeachersTableName,
 } from './config';
 import { enumToArray } from './utils';
-import { ESex, EUniversities, ITeacher } from './model';
+import {
+  ESex, ESubjects, EUniversities, ITeacher,
+} from './model';
 
 export const db: Sequelize = new Sequelize(dbName, dbUser, dbPassword, {
   host: 'localhost',
@@ -23,7 +25,8 @@ Teacher.init({
     allowNull: false,
   },
   subject: {
-    type: DataTypes.STRING,
+    type: DataTypes.ENUM,
+    values: enumToArray(ESubjects),
     allowNull: false,
   },
   sex: {
