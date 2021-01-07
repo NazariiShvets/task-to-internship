@@ -4,6 +4,8 @@ export enum EUniversities { MIT, LNU, Cambridge, Harvard, Hogwarts, OurTestSchoo
 
 export enum ESubjects { Math, Biology, English, Physics, Chemistry }
 
+export enum EDays { Monday, Tuesday, Wednesday, Thursday, Friday}
+
 export interface ITeacher {
     id?:number
     name: string
@@ -12,4 +14,15 @@ export interface ITeacher {
     subject: ESubjects
     yearsOfExperience: number
     workedInUniversities: EUniversities
+}
+
+export interface IClassroom {
+    id?:number
+}
+
+export interface ILesson {
+    id?:number
+    url?:string
+    days: EDays
+    startLesson : Date
 }

@@ -1,10 +1,10 @@
 import { DataTypes, Model, Sequelize } from 'sequelize';
 import {
-  dbPassword, dbName, dbUser, dbTeachersTableName,
+  dbPassword, dbName, dbUser, dbTeachersTableName, dbLessonsTableName, dbClassroomTableName,
 } from './config';
 import { enumToArray } from './utils';
 import {
-  ESex, ESubjects, EUniversities, ITeacher,
+  EDays, ESex, ESubjects, EUniversities, IClassroom, ILesson, ITeacher,
 } from './model';
 
 export const db: Sequelize = new Sequelize(dbName, dbUser, dbPassword, {
@@ -47,4 +47,39 @@ Teacher.init({
   sequelize: db,
   modelName: 'Teacher',
   tableName: dbTeachersTableName,
+});
+
+export class Classroom extends Model<IClassroom> {
+}
+
+Classroom.init({}, {
+  sequelize: db,
+  modelName: 'Classroom',
+  tableName: dbClassroomTableName,
+});
+
+export class Lesson extends Model<ILesson> {
+}
+
+Lesson.init({
+  startLesson: {
+    type: DataTypes.DATE,
+    allowNull: false,
+  },
+  url: {
+    type: DataTypes.STRING,
+    validate: {
+      isUrl: true,
+    },
+
+  },
+  days: {
+    type: DataTypes.ENUM,
+    values: enumToArray(EDays),
+    allowNull: false,
+  },
+}, {
+  sequelize: db,
+  modelName: 'Lesson',
+  tableName: dbLessonsTableName,
 });
