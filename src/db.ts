@@ -13,7 +13,55 @@ export const db: Sequelize = new Sequelize(dbName, dbUser, dbPassword, {
 });
 
 export class Teacher extends Model<ITeacher> {
+  id!: number;
 }
+
+export class Lesson extends Model<ILesson> {
+}
+
+export class Classroom extends Model<IClassroom> {
+}
+
+Classroom.init({}, {
+  sequelize: db,
+  modelName: 'Classroom',
+  tableName: dbClassroomTableName,
+});
+
+Lesson.init({
+  url: DataTypes.STRING,
+  subject: {
+    type: DataTypes.ENUM,
+    values: enumToArray(ESubjects),
+    allowNull: false,
+  },
+  days: {
+    type: DataTypes.ENUM,
+    values: enumToArray(EDays),
+    allowNull: false,
+  },
+  from: {
+    type: DataTypes.TIME,
+    allowNull: false,
+  },
+  to: {
+    type: DataTypes.TIME,
+    allowNull: false,
+  },
+  classroom_id: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      // @ts-ignore
+      model: Classroom,
+      key: 'id',
+    },
+  },
+}, {
+  sequelize: db,
+  modelName: 'Lesson',
+  tableName: dbLessonsTableName,
+});
 
 Teacher.init({
   name: {
@@ -28,17 +76,22 @@ Teacher.init({
     type: DataTypes.ENUM,
     values: enumToArray(ESubjects),
     allowNull: false,
+    references: {
+      // @ts-ignore
+      model: Lesson,
+      key: 'subject',
+    },
   },
   sex: {
     type: DataTypes.ENUM,
     values: enumToArray(ESex),
     allowNull: false,
   },
-  yearsOfExperience: {
+  years_of_experience: {
     type: DataTypes.INTEGER,
     defaultValue: 0,
   },
-  workedInUniversities: {
+  worked_in_universities: {
     type: DataTypes.ENUM,
     values: enumToArray(EUniversities),
     defaultValue: EUniversities[EUniversities.OurTestSchool],
@@ -47,39 +100,4 @@ Teacher.init({
   sequelize: db,
   modelName: 'Teacher',
   tableName: dbTeachersTableName,
-});
-
-export class Classroom extends Model<IClassroom> {
-}
-
-Classroom.init({}, {
-  sequelize: db,
-  modelName: 'Classroom',
-  tableName: dbClassroomTableName,
-});
-
-export class Lesson extends Model<ILesson> {
-}
-
-Lesson.init({
-  startLesson: {
-    type: DataTypes.DATE,
-    allowNull: false,
-  },
-  url: {
-    type: DataTypes.STRING,
-    validate: {
-      isUrl: true,
-    },
-
-  },
-  days: {
-    type: DataTypes.ENUM,
-    values: enumToArray(EDays),
-    allowNull: false,
-  },
-}, {
-  sequelize: db,
-  modelName: 'Lesson',
-  tableName: dbLessonsTableName,
 });

@@ -26,12 +26,12 @@ app.get('/', getTargetMathTeachers);
 
 db.authenticate().then(async () => {
   try {
-    await db.sync({ force: true });
+    await db.sync({ force: false });
     console.log('Database connect');
     app.listen(PORT, () => {
       console.log(`Server started at port ${PORT}`);
     });
   } catch (e) {
-    console.error(e);
+    console.error(e.message);
   }
 });

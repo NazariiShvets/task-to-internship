@@ -7,22 +7,25 @@ export enum ESubjects { Math, Biology, English, Physics, Chemistry }
 export enum EDays { Monday, Tuesday, Wednesday, Thursday, Friday}
 
 export interface ITeacher {
-    id?:number
+    id?: number
     name: string
-    age:number
+    age: number
     sex: ESex
     subject: ESubjects
-    yearsOfExperience: number
-    workedInUniversities: EUniversities
+    years_of_experience: number
+    worked_in_universities: EUniversities
 }
 
 export interface IClassroom {
-    id?:number
+    id?: number
 }
 
 export interface ILesson {
-    id?:number
-    url?:string
+    id?: number
+    url?: string
+    subject: ESubjects
     days: EDays
-    startLesson : Date
+    from: Date
+    to: Date
+    classroom_id: number
 }

@@ -1,8 +1,7 @@
 import { Request, Response } from 'express';
 import { QueryTypes } from 'sequelize';
 import { db, Teacher } from './db';
-import { checkIdReturnNumberOrException } from './utils';
-import { ESubjects } from './model';
+import { checkIdReturnNumberOrException, uniqueTeachersArray } from './utils';
 
 export const getAllTeachers = async (req: Request, res: Response) => {
   try {
@@ -74,15 +73,21 @@ export const deleteTeacher = async (req: Request, res: Response) => {
 
 export const getTargetMathTeachers = async (req: Request, res: Response) => {
   try {
-    const replacements = {
-      subject: ESubjects[ESubjects.Math],
-    };
-    const teachers: Array<Teacher> = await db.query('SELECT * FROM teachers', {
+    const sql = `SELECT t.*
+                 FROM teachers t 
+                 LEFT JOIN lessons l 
+                 ON l.subject::varchar(255) = t.subject::varchar(255) 
+                 WHERE t.subject = 'Math' 
+                 AND years_of_experience >= 10 
+                 AND l.classroom_id = 100
+                 AND l.days = 'Thursday' 
+                 AND l.from >= time '08:30' 
+                 AND l.to <= time '14:30'
+                 `;
+    const teachers: Array<Teacher> = await db.query(sql, {
       type: QueryTypes.SELECT,
-      model: Teacher,
-      replacements,
     });
-    res.status(200).json({ teachers });
+    res.status(200).json({ teachers: uniqueTeachersArray(teachers) });
   } catch (error) {
     res.status(400).json({ description: error.message || 'Error : Bad request' });
   }
