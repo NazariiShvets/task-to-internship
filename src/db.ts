@@ -1,3 +1,4 @@
+// eslint-disable-next-line max-classes-per-file
 import { DataTypes, Model, Sequelize } from 'sequelize';
 import {
   dbPassword, dbName, dbUser, dbTeachersTableName, dbLessonsTableName, dbClassroomTableName,
@@ -13,7 +14,7 @@ export const db: Sequelize = new Sequelize(dbName, dbUser, dbPassword, {
 });
 
 export class Teacher extends Model<ITeacher> {
-  id!: number;
+    id!: number;
 }
 
 export class Lesson extends Model<ILesson> {
@@ -22,20 +23,37 @@ export class Lesson extends Model<ILesson> {
 export class Classroom extends Model<IClassroom> {
 }
 
-Classroom.init({}, {
+Classroom.init({
+  url: DataTypes.STRING,
+  windows: {
+    type: DataTypes.INTEGER,
+    defaultValue: 3,
+  },
+  tables: {
+    type: DataTypes.INTEGER,
+    defaultValue: 12,
+  },
+  boards: {
+    type: DataTypes.INTEGER,
+    defaultValue: 1,
+  },
+  isOpenSpace: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  },
+}, {
   sequelize: db,
   modelName: 'Classroom',
   tableName: dbClassroomTableName,
 });
 
 Lesson.init({
-  url: DataTypes.STRING,
   subject: {
     type: DataTypes.ENUM,
     values: enumToArray(ESubjects),
     allowNull: false,
   },
-  days: {
+  day: {
     type: DataTypes.ENUM,
     values: enumToArray(EDays),
     allowNull: false,
@@ -91,7 +109,7 @@ Teacher.init({
     type: DataTypes.INTEGER,
     defaultValue: 0,
   },
-  worked_in_universities: {
+  studied_at_university: {
     type: DataTypes.ENUM,
     values: enumToArray(EUniversities),
     defaultValue: EUniversities[EUniversities.OurTestSchool],

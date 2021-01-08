@@ -13,18 +13,22 @@ export interface ITeacher {
     sex: ESex
     subject: ESubjects
     years_of_experience: number
-    worked_in_universities: EUniversities
+    studied_at_university: EUniversities
 }
 
 export interface IClassroom {
     id?: number
+    url?: string
+    windows?: number
+    tables?: number
+    boards?: number
+    isOpenSpace?: boolean
 }
 
 export interface ILesson {
     id?: number
-    url?: string
     subject: ESubjects
-    days: EDays
+    day: EDays
     from: Date
     to: Date
     classroom_id: number
