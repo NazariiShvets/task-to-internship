@@ -1,4 +1,4 @@
-# Test task to intership 
+# Test task to internship 
 > using NodeJS , TypeScript , Express , Sequelize , PostgreSQL
 
 # Database models
