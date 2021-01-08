@@ -1,5 +1,5 @@
-# ts-node-test-task
- Test task to intership , using NodeJS , TS , Express , Sequelize , PostgreSQL
+# Test task to intership 
+> using NodeJS , TypeScript , Express , Sequelize , PostgreSQL
 
 # Database models
 > ## Classrooms
